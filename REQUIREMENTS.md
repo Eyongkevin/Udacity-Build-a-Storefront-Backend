@@ -5,20 +5,20 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show (args: product id)
-- Create (args: Product)[token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index: `'products/' [GET]`
+- Show (args: product id): `'products/:product_id' [GET]`
+- Create (args: Product)[token required]: `'products/:product' [POST] (token)`
+- [OPTIONAL] Top 5 most popular products:  `'products/topfive/' [GET]`
+- [OPTIONAL] Products by category (args: product category): `'products/:product_category' [GET]`
 
 #### Users
-- Index [token required]
-- Show (args: id)[token required]
-- Create (args: User)[token required]
+- Index [token required]: `'users/' [GET]`
+- Show (args: id)[token required]: `'users/:user_id' [GET] (token)`
+- Create (args: User)[token required]: `'users/:user' [POST]`
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required]: `'order/:user_id' [GET]`
+- [OPTIONAL] Completed Orders by user (args: user id)[token required]: `'orders/:user_id' [GET] (token)`
 
 ## Data Shapes
 #### Product
