@@ -27,12 +27,18 @@ These are the notes from a meeting with the frontend developer that describe wha
 - price
 - [OPTIONAL] category
 
+```
+Table: Product (id:varchar, name:varchar, price:numeric, category:varchar)
+```
 #### User
 - id
 - firstName
 - lastName
 - password
 
+```
+Table: User (id:varchar, firstName:varchar, lastName:varchar, password:varchar)
+```
 #### Orders
 - id
 - id of each product in the order
@@ -40,3 +46,6 @@ These are the notes from a meeting with the frontend developer that describe wha
 - user_id
 - status of order (active or complete)
 
+```
+Table: Orders (id:varchar, product_id:varchar(foreign key to Product table), quality:string, user_id:varchar(foreign key to User table), status:enum(active, complete))
+```
