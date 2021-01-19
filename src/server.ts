@@ -4,6 +4,7 @@ import cors from 'cors'
 
 import * as Product from './models/Product'
 import * as User from './models/User'
+import * as Order from './models/Order'
 
 const app: express.Application = express()
 const address: string = "0.0.0.0:3000"
@@ -23,6 +24,10 @@ app.post('/products', Product.createProduct)
 app.get('/users', User.getUsers)
 app.get('/users/:id', User.getUserById)
 app.post('/users', User.createUser)
+
+// Order route
+app.get('/orders/current/:user_id', Order.getCurrentOrdersByUserId)
+app.get('/orders/completed/:user_id', Order.getCompletedOrdersByUserId)
 
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`)
