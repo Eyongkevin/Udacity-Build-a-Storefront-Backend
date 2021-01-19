@@ -1,13 +1,14 @@
 import { pool } from './Pool';
+import { Response, Request } from 'express'
 
 // define table
-const table = 'product';
+const table: String = 'product';
 
 // set error message
 pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
 
 // select all products
-const getProducts = async (req, res) => {
+const getProducts = async (req: Request, res: Response) => {
     const allProducts = await pool.query(
         `SELECT * FROM ${table};`
     );
@@ -16,7 +17,7 @@ const getProducts = async (req, res) => {
 };
 
 // select product by id
-const getProductById = async (req, res) => {
+const getProductById = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const productById = await pool.query(
         `SELECT * FROM ${table} WHERE id = $1`, [id]
@@ -26,8 +27,8 @@ const getProductById = async (req, res) => {
 };
 
 // select product by category
-const getProductByCat = async (req, res) => {
-    const cat = parseInt(req.params.category);
+const getProductByCat = async (req: Request, res: Response) => {
+    const cat = req.params.category;
     const productByCat = await pool.query(
         `SELECT * FROM ${table} WHERE category = $1`, [cat]
     );
@@ -36,7 +37,7 @@ const getProductByCat = async (req, res) => {
 };
 
 // create a product
-const createProduct = async (req, res) => {
+const createProduct = async (req: Request, res: Response) => {
     const { name, price, category } = req.body;
     const addProduct = await pool.query(
         `INSERT INTO ${table} (name, price, category) VALUES($1, $2, $3) RETURNING *`,
@@ -49,3 +50,10 @@ const createProduct = async (req, res) => {
 // update
 // delete
 // where
+
+export {
+    getProducts,
+    getProductById,
+    getProductByCat,
+    createProduct
+}
