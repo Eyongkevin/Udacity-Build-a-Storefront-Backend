@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
+    "watch": "rimraf ./dist && tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc"
   },
@@ -16,7 +16,8 @@
     "cors": "^2.8.5",
     "db-migrate-pg": "^1.2.2",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
