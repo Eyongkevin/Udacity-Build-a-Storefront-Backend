@@ -1,5 +1,6 @@
 import { pool } from './Pool';
 import { Response, Request } from 'express'
+import bcrypt from 'bcrypt';
 
 // define table
 const table: String = 'users';
@@ -29,9 +30,10 @@ const getUserById = async (req: Request, res: Response) => {
 // create a user
 const createUser = async (req: Request, res: Response) => {
     const { firstName, lastName, password } = req.body;
+    const hashPassword = bcrypt.hashSync(password, 10);
     const addUser = await pool.query(
         `INSERT INTO ${table} (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *`,
-        [firstName, lastName, password ]
+        [firstName, lastName, hashPassword ]
     );
     res.status(200).json(addUser.rows[0]);
 
