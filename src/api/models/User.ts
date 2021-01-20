@@ -3,7 +3,7 @@ import { Response, Request, NextFunction } from 'express'
 import bcrypt from 'bcrypt';
 
 // define table
-const table: String = 'use';
+const table: String = 'users';
 
 // set error message
 // pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
@@ -23,25 +23,34 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // select user by id
-const getUserById = async (req: Request, res: Response) => {
+const getUserById = (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id);
-    const userById = await pool.query(
-        `SELECT * FROM ${table} WHERE id = $1`, [id]
-    );
-    res.status(200).json(userById.rows[0]);
-
+    pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id], (error, results) => {
+        if (error) {
+            parseError(error);
+            next(error)
+        } else{
+            res.status(200).json(results.rows[0]);
+        }
+    });
 };
 
 // create a user
-const createUser = async (req: Request, res: Response) => {
+const createUser = (req: Request, res: Response, next: NextFunction) => {
     const { firstName, lastName, password } = req.body;
     const hashPassword = bcrypt.hashSync(password, 10);
-    const addUser = await pool.query(
+    pool.query(
         `INSERT INTO ${table} (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *`,
-        [firstName, lastName, hashPassword ]
+        [firstName, lastName, hashPassword ],
+        (error, results) => {
+            if (error) {
+                parseError(error);
+                next(error)
+            } else{
+                res.status(200).json(results.rows[0]);
+            }
+        }
     );
-    res.status(200).json(addUser.rows[0]);
-
 };
 
 // update

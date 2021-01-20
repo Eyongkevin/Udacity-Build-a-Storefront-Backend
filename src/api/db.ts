@@ -1,6 +1,5 @@
 import pg, { Pool } from 'pg';
 import dotenv from 'dotenv';
-import { Response } from 'express';
 
 dotenv.config();
 
@@ -23,8 +22,6 @@ export const parseError = (err: NodeJS.ErrnoException)=> {
     const errorCodes: parseErrorTypes  = {
       "08003": "connection_does_not_exist",
       "08006": "connection_failure",
-      "2F002": "modifying_sql_data_not_permitted",
-      "57P03": "cannot_connect_now",
       "42601": "syntax_error",
       "42501": "insufficient_privilege",
       "42602": "invalid_name",
@@ -33,6 +30,8 @@ export const parseError = (err: NodeJS.ErrnoException)=> {
       "42703": "undefined_column",
       "42000": "syntax_error_or_access_rule_violation",
       "42P01": "undefined_table",
+      "2F002": "modifying_sql_data_not_permitted",
+      "57P03": "cannot_connect_now",
       "42P02": "undefined_parameter"
     };
   
