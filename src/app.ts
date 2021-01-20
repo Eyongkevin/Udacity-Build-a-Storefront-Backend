@@ -10,14 +10,14 @@ import { handleErrors } from './api/middlewares/handleErrors';
 export const app: Application = express();
 
 // enable cors
-app.use(cors())
+app.use(cors());
 // add json parser
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 // console log all requests
-app.use(loggerMiddleware)
+app.use(loggerMiddleware);
 // set routes
 routes(app);
 // handle unknown requests
-app.use(requestNotFound404)
+app.use(requestNotFound404);
 // handle errors
-app.use(handleErrors)
+app.use(handleErrors);

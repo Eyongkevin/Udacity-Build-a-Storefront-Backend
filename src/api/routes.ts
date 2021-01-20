@@ -1,8 +1,8 @@
 import { Application, Router } from 'express';
 
-import { ProductController } from './controllers/ProductController'
-import { UserController } from './controllers/UserController'
-import { OrderController } from './controllers/OrderController'
+import { ProductController } from './controllers/ProductController';
+import { UserController } from './controllers/UserController';
+import { OrderController } from './controllers/OrderController';
 
 const _routes: [string, Router][] = [
   ['/products', ProductController],
