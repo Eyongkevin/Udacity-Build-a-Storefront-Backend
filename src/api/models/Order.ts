@@ -2,7 +2,7 @@ import { pool, parseError } from '../db';
 import { Response, Request, NextFunction } from 'express'
 
 // define table
-const table: String = 'orders';
+const table: string = 'orders';
 
 // set error message
 // pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);

@@ -3,7 +3,7 @@ import { Response, Request, NextFunction } from 'express'
 import bcrypt from 'bcrypt';
 
 // define table
-const table: String = 'users';
+const table: string = 'users';
 
 // set error message
 // pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
