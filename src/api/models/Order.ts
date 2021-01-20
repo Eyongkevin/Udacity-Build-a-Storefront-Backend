@@ -9,10 +9,14 @@ pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
 
 
 // select current order by user id
-const getCurrentOrdersByUserId = async (req: Request, res: Response) => {
+const getCurrentOrderByUserId = async (req: Request, res: Response) => {
     const user_id = parseInt(req.params.user_id);
+    const status = 'active';
     const currentOrdersByUserId = await pool.query(
-        `SELECT * FROM ${table} WHERE user_id = $1`, [user_id]
+        `SELECT * FROM ${table} WHERE user_id = $1 AND status = $2 LIMIT 1`, [
+            user_id,
+            status
+        ]
     );
     res.status(200).json(currentOrdersByUserId.rows[0]);
 
@@ -37,6 +41,6 @@ const getCompletedOrdersByUserId = async (req: Request, res: Response) => {
 // where
 
 export {
-    getCurrentOrdersByUserId,
+    getCurrentOrderByUserId,
     getCompletedOrdersByUserId
 }
