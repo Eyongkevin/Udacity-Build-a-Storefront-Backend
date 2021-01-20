@@ -1,4 +1,4 @@
-import { pool } from './Pool';
+import { pool } from '../db';
 import { Response, Request } from 'express'
 
 // define table

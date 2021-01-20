@@ -1,19 +1,24 @@
-import { pool } from './Pool';
-import { Response, Request } from 'express'
+import { pool, parseError } from '../db';
+import { Response, Request, NextFunction } from 'express'
 import bcrypt from 'bcrypt';
 
 // define table
-const table: String = 'users';
+const table: String = 'use';
 
 // set error message
-pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
+// pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
 
 // select all users
-const getUsers = async (req: Request, res: Response) => {
-    const allUsers = await pool.query(
-        `SELECT * FROM ${table};`
-    );
-    res.status(200).json(allUsers.rows);
+const getUsers = (req: Request, res: Response, next: NextFunction) => {
+    pool.query(`SELECT * FROM ${table};`, (error, results) => {
+        if (error) {
+            parseError(error);
+            next(error)
+        } else{
+            res.status(200).json(results.rows);
+        }
+        
+    });
 
 };
 

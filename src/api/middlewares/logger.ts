@@ -1,3 +1,3 @@
 import morgan from 'morgan';
 
-export const morganMiddleware = morgan('short');
+export const loggerMiddleware = morgan('short');
