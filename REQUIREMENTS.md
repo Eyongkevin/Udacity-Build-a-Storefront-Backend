@@ -28,7 +28,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] category
 
 ```
-Table: Product (id:varchar, name:varchar, price:numeric, category:varchar)
+Table: Product (id:serial[primary key], name:varchar(50)[not null], price:numeric[not null], category:varchar(50))
 ```
 #### User
 - id
@@ -37,7 +37,7 @@ Table: Product (id:varchar, name:varchar, price:numeric, category:varchar)
 - password
 
 ```
-Table: User (id:varchar, firstName:varchar, lastName:varchar, password:varchar)
+Table: User (id:serial[primary key], firstName:varchar(50)[not null], lastName:varchar(50)[not null], password:varchar(60)[not null])
 ```
 #### Orders
 - id
@@ -47,5 +47,5 @@ Table: User (id:varchar, firstName:varchar, lastName:varchar, password:varchar)
 - status of order (active or complete)
 
 ```
-Table: Orders (id:varchar, product_id:varchar(foreign key to Product table), quality:string, user_id:varchar(foreign key to User table), status:enum(active, complete))
+Table: Orders (id:serial[primary key], product_id:integer(foreign key to products table), quantity:integer[default 1], user_id:integer(foreign key to users table), status:enum(active, complete)[not null])
 ```
