@@ -6,4 +6,5 @@ export const ProductController: Router = Router();
 
 ProductController.get('/', Product.getProducts);
 ProductController.get('/:id', Product.getProductById);
+ProductController.get('/:category', Product.getProductByCat);
 ProductController.post('/', auth_token, Product.createProduct);
