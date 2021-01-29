@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import { pool, parseError } from '../db';
+import { generateToken } from '../../utils';
 
 // define table
 const table: string = 'users';
@@ -45,7 +46,12 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
         parseError(error);
         next(error);
       } else {
-        res.status(200).json(results.rows[0]);
+        const id: number = results.rows[0].id;
+        const token = generateToken(id);
+        res.status(200).json({
+          auth: true,
+          token
+        });
       }
     }
   );
