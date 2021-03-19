@@ -1,58 +1,43 @@
 import { Response, Request, NextFunction } from 'express';
+import { OrderType } from '../interfaces/Order';
 import { pool, parseError } from '../db';
 
-// define table
-const table: string = 'orders';
+export class Order {
+  // define table
+  table: string = 'orders';
 
-// set error message
-// pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
+  // Get current order by user id
+  async getCurrentOrderByUserId(userId: number): Promise<OrderType[]> {
+    try {
+      const status = 'active';
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table} WHERE user_id = ${userId} AND status = ${status} LIMIT 1`;
+      const result = await conn.query(sql);
+      conn.release();
 
-// select current order by user id
-const getCurrentOrderByUserId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const userId: number = parseInt(req.params.user_id);
-  const status = 'active';
-  pool.query(
-    `SELECT * FROM ${table} WHERE user_id = $1 AND status = $2 LIMIT 1`,
-    [userId, status],
-    (error, results) => {
-      if (error) {
-        parseError(error);
-        next(error);
-      } else {
-        res.status(200).json(results.rows[0]);
-      }
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not get current order. Error: ${parseError(err)}`);
     }
-  );
-};
+  }
 
-// select completed order by user id
-const getCompletedOrdersByUserId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const userId: number = parseInt(req.params.user_id);
-  const status = 'complete';
-  pool.query(
-    `SELECT * FROM ${table} WHERE user_id = $1 AND status = $2`,
-    [userId, status],
-    (error, results) => {
-      if (error) {
-        parseError(error);
-        next(error);
-      } else {
-        res.status(200).json(results.rows);
-      }
+  // select completed order by user id
+  async getCompletedOrdersByUserId(userId: number): Promise<OrderType[]> {
+    try {
+      const status = 'complete';
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table} WHERE user_id = ${userId} AND status = ${status}`;
+      const result = await conn.query(sql);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Could not get completed orders. Error: ${parseError(err)}`
+      );
     }
-  );
-};
+  }
+}
 
 // update
 // delete
-// where
-
-export { getCurrentOrderByUserId, getCompletedOrdersByUserId };
