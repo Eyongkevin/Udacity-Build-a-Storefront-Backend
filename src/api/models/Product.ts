@@ -1,73 +1,70 @@
-import { Response, Request, NextFunction } from 'express';
 import { pool, parseError } from '../db';
+import { ProductType } from '../interfaces/Product';
 
-// define table
-const table: string = 'products';
+export class Product {
+  // define table
+  table: string = 'products';
 
-// set error message
-// pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
+  // select all products
+  async getProducts(): Promise<ProductType[]> {
+    try {
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table}`;
+      const result = await conn.query(sql);
+      conn.release();
 
-// select all products
-const getProducts = (req: Request, res: Response, next: NextFunction) => {
-  pool.query(`SELECT * FROM ${table};`, (error, results) => {
-    if (error) {
-      parseError(error);
-      next(error);
-    } else {
-      res.status(200).json(results.rows);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not get all products. Error: ${parseError(err)}`);
     }
-  });
-};
+  }
 
-// select product by id
-const getProductById = (req: Request, res: Response, next: NextFunction) => {
-  const id = parseInt(req.params.id);
-  pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id], (error, results) => {
-    if (error) {
-      parseError(error);
-      next(error);
-    } else {
-      res.status(200).json(results.rows[0]);
+  // select product by id
+  async getProductById(productId: number): Promise<ProductType> {
+    try {
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table} WHERE id=${productId}`;
+      const result = await conn.query(sql);
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not get product by id. Error: ${parseError(err)}`);
     }
-  });
-};
+  }
 
-// select product by category
-const getProductByCat = (req: Request, res: Response, next: NextFunction) => {
-  const cat = req.params.category;
-  pool.query(
-    `SELECT * FROM ${table} WHERE category = $1`,
-    [cat],
-    (error, results) => {
-      if (error) {
-        parseError(error);
-        next(error);
-      } else {
-        res.status(200).json(results.rows);
-      }
+  // select product by category
+  async getProductByCat(category: string): Promise<ProductType[]> {
+    try {
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table} WHERE category=${category}`;
+      const result = await conn.query(sql);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Could not get product by category. Error: ${parseError(err)}`
+      );
     }
-  );
-};
+  }
 
-// create a product
-const createProduct = (req: Request, res: Response, next: NextFunction) => {
-  const { name, price, category } = req.body;
-  pool.query(
-    `INSERT INTO ${table} (name, price, category) VALUES($1, $2, $3) RETURNING *`,
-    [name, price, category],
-    (error, results) => {
-      if (error) {
-        parseError(error);
-        next(error);
-      } else {
-        res.status(200).json(results.rows[0]);
-      }
+  // create product
+  async createProduct(
+    name: string,
+    price: number,
+    category: string
+  ): Promise<ProductType> {
+    try {
+      console.log('name: ', name, 'price: ', price, 'cat: ', category);
+      const sql = `INSERT INTO ${this.table} (name, price, category) VALUES($1, $2, $3) RETURNING *`;
+      const conn = await pool.connect();
+      const result = await conn.query(sql, [name, price, category]);
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not create product. Error: ${parseError(err)}`);
     }
-  );
-};
-
-// update
-// delete
-// where
-
-export { getProducts, getProductById, getProductByCat, createProduct };
+  }
+}
