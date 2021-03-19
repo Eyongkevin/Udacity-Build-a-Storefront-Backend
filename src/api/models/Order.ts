@@ -1,4 +1,3 @@
-import { Response, Request, NextFunction } from 'express';
 import { OrderType } from '../interfaces/Order';
 import { pool, parseError } from '../db';
 
