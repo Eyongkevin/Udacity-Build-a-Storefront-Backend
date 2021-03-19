@@ -10,7 +10,10 @@ import { handleErrors } from './api/middlewares/handleErrors';
 export const app: Application = express();
 
 // enable cors
-app.use(cors());
+const corsOption = {
+  optionsSuccessStatus: 200 // for some lagacy browsers
+};
+app.use(cors(corsOption));
 // add json parser
 app.use(bodyParser.json());
 // console log all requests
