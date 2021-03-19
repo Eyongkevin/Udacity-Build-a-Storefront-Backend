@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "watch": "rimraf ./dist && tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "jasmine --config=./spec/support/jasmine.json",
+    "test": "npm run build-dist-babel && jasmine --config=./spec/support/jasmine.json",
     "build-test-babel": "babel spec -d dist-test/spec",
     "build-dist-babel": "npm run tsc && rimraf ./dist-test && babel dist -d dist-test/src && npm run build-test-babel",
     "lint": "eslint . --ext .ts",
@@ -48,8 +48,8 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-promise": "^4.2.1",
     "jasmine": "^3.6.4",
+    "jasmine-spec-reporter": "^6.0.0",
     "prettier": "^2.2.1",
-    "ts-node": "^9.1.1",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.1.3"
   }
