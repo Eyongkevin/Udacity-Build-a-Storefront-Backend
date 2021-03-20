@@ -14,14 +14,13 @@ ProductController.get('/:id', async (req: Request, res: Response) => {
   const productById = await product.getProductById(productId);
   return res.json(productById);
 });
-ProductController.get('/:category', async (req: Request, res: Response) => {
+ProductController.get('/cat/:category', async (req: Request, res: Response) => {
   const category: string = String(req.params.category);
   const productByCat = await product.getProductByCat(category);
   return res.json(productByCat);
 });
 ProductController.post('/', authToken, async (req: Request, res: Response) => {
-  const { name, price, category } = req.body;
-  const createdProduct = await product.createProduct(name, price, category);
+  const createdProduct = await product.createProduct(req.body);
   console.log('result: ', createdProduct);
   return res.json(createdProduct);
 });

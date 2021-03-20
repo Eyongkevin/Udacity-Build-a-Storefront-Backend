@@ -1,12 +1,12 @@
 import { pool, parseError } from '../db';
-import { ProductType } from '../interfaces/Product';
+import { ProductType, ProductReturnType } from '../interfaces/Product';
 
 export class Product {
   // define table
   table: string = 'products';
 
   // select all products
-  async getProducts(): Promise<ProductType[]> {
+  async getProducts(): Promise<ProductReturnType[]> {
     try {
       const conn = await pool.connect();
       const sql = `SELECT * FROM ${this.table}`;
@@ -20,7 +20,7 @@ export class Product {
   }
 
   // select product by id
-  async getProductById(productId: number): Promise<ProductType> {
+  async getProductById(productId: number): Promise<ProductReturnType> {
     try {
       const conn = await pool.connect();
       const sql = `SELECT * FROM ${this.table} WHERE id=${productId}`;
@@ -34,11 +34,11 @@ export class Product {
   }
 
   // select product by category
-  async getProductByCat(category: string): Promise<ProductType[]> {
+  async getProductByCat(category: string): Promise<ProductReturnType[]> {
     try {
       const conn = await pool.connect();
-      const sql = `SELECT * FROM ${this.table} WHERE category=${category}`;
-      const result = await conn.query(sql);
+      const sql = `SELECT * FROM ${this.table} WHERE category=$1`;
+      const result = await conn.query(sql, [category]);
       conn.release();
 
       return result.rows;
@@ -50,13 +50,9 @@ export class Product {
   }
 
   // create product
-  async createProduct(
-    name: string,
-    price: number,
-    category: string
-  ): Promise<ProductType> {
+  async createProduct(product: ProductType): Promise<ProductReturnType> {
     try {
-      console.log('name: ', name, 'price: ', price, 'cat: ', category);
+      const { name, price, category } = product;
       const sql = `INSERT INTO ${this.table} (name, price, category) VALUES($1, $2, $3) RETURNING *`;
       const conn = await pool.connect();
       const result = await conn.query(sql, [name, price, category]);
