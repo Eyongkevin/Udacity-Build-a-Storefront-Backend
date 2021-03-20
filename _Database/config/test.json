@@ -1,0 +1,10 @@
+{
+    "test": {
+        "driver": "pg",
+        "user": {"ENV": "DB_USER"},
+        "password": {"ENV": "DB_PASS"},
+        "host": {"ENV": "DB_HOST"},
+        "database": {"ENV": "DB_NAME_TEST"},
+        "port": {"ENV": "DB_PORT"}
+      }, "sql-file" : true
+}

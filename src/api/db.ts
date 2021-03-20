@@ -6,13 +6,14 @@ dotenv.config();
 interface parseErrorTypes {
   [code: string]: string;
 }
-
+console.log('ENV: ', process.env.ENVI);
 export const pool: Pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT as string),
-  database: process.env.DB_NAME
+  database:
+    process.env.ENVI === 'test' ? process.env.DB_NAME_TEST : process.env.DB_NAME
 });
 
 // eslint-disable-next-line no-undef

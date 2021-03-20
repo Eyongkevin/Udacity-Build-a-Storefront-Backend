@@ -5,7 +5,9 @@
   "main": "server.ts",
   "scripts": {
     "watch": "rimraf ./dist && tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "npm run build-dist-babel && jasmine --config=./spec/support/jasmine.json",
+    "test-up": "db-migrate up -e test -m ./_Database/migrations   --config ./_Database/config/test.json ",
+    "test-drop":"db-migrate db:drop test -e test --config ./_Database/config/test.json",
+    "test": "npm run test-up && npm run build-dist-babel && ENVI=test jasmine --config=./spec/support/jasmine.json && npm run test-drop",
     "build-test-babel": "babel spec -d dist-test/spec",
     "build-dist-babel": "npm run tsc && rimraf ./dist-test && babel dist -d dist-test/src && npm run build-test-babel",
     "lint": "eslint . --ext .ts",
