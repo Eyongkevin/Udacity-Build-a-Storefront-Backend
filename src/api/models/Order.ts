@@ -1,12 +1,28 @@
-import { OrderType } from '../interfaces/Order';
+import { OrderReturnType, OrderType } from '../interfaces/Order';
 import { pool, parseError } from '../db';
 
 export class Order {
   // define table
   table: string = 'orders';
 
+  // select all orders
+  async getOrders(userId: number): Promise<OrderReturnType[]> {
+    try {
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table} WHERE user_id=$1`;
+      const result = await conn.query(sql, [userId]);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Could not get all orders of user. Error: ${parseError(err)}`
+      );
+    }
+  }
+
   // Get current order by user id
-  async getCurrentOrderByUserId(userId: number): Promise<OrderType[]> {
+  async getCurrentOrderByUserId(userId: number): Promise<OrderReturnType[]> {
     try {
       const status = 'active';
       const conn = await pool.connect();
@@ -21,7 +37,7 @@ export class Order {
   }
 
   // select completed order by user id
-  async getCompletedOrdersByUserId(userId: number): Promise<OrderType[]> {
+  async getCompletedOrdersByUserId(userId: number): Promise<OrderReturnType[]> {
     try {
       const status = 'complete';
       const conn = await pool.connect();
@@ -36,7 +52,62 @@ export class Order {
       );
     }
   }
+
+  // create an order
+  async createOrder(order: OrderType): Promise<OrderReturnType> {
+    try {
+      const { productId, quantity, userId, status } = order;
+
+      const conn = await pool.connect();
+      const sql = `INSERT INTO ${this.table} (product_id, quantity, user_id, status) VALUES($1, $2, $3, $4) RETURNING *`;
+      const result = await conn.query(sql, [
+        productId,
+        quantity,
+        userId,
+        status
+      ]);
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not create order. Error: ${parseError(err)}`);
+    }
+  }
+
+  // update an order
+  async updateOrderStatus(
+    status: string,
+    orderId: number,
+    userId: number
+  ): Promise<OrderReturnType> {
+    try {
+      const conn = await pool.connect();
+      const sql = `UPDATE ${this.table} SET status=$1 WHERE id=$2 AND user_id=$3 RETURNING *`;
+      const result = await conn.query(sql, [status, orderId, userId]);
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(
+        `Could not update order status. Error: ${parseError(err)}`
+      );
+    }
+  }
+
+  async deleteOrder(id: number): Promise<OrderReturnType> {
+    try {
+      const sql = `DELETE FROM ${this.table} WHERE id=$1 RETURNING *`;
+      const conn = await pool.connect();
+      const result = await conn.query(sql, [id]);
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(
+        `Could not delete order ${id}. Error: ${parseError(err)}`
+      );
+    }
+  }
 }
 
-// update
 // delete

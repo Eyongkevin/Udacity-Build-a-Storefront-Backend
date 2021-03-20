@@ -7,20 +7,55 @@ export const OrderController: Router = Router();
 const order: Order = new Order();
 
 OrderController.get(
+  '/:user_id',
+  authToken,
+  async (req: Request, res: Response) => {
+    const userId: number = parseInt(req.params.user_id);
+    const currentOrder = await order.getOrders(userId);
+    return res.json(currentOrder);
+  }
+);
+OrderController.get(
   '/current/:user_id',
   authToken,
-  function (req: Request, res: Response) {
+  async (req: Request, res: Response) => {
     const userId: number = parseInt(req.params.user_id);
-    const currentOrder = order.getCurrentOrderByUserId(userId);
+    const currentOrder = await order.getCurrentOrderByUserId(userId);
     return res.json(currentOrder);
   }
 );
 OrderController.get(
   '/completed/:user_id',
   authToken,
-  function (req: Request, res: Response) {
+  async (req: Request, res: Response) => {
     const userId: number = parseInt(req.params.user_id);
-    const currentOrder = order.getCompletedOrdersByUserId(userId);
+    const currentOrder = await order.getCompletedOrdersByUserId(userId);
     return res.json(currentOrder);
   }
 );
+// http://0.0.0.0:3000/orders?status=complete&orderId=4&userId=1
+OrderController.put('/', authToken, async (req: Request, res: Response) => {
+  const status = req.query.status as string;
+  const orderId = parseInt(req.query.orderId as string);
+  const userId = parseInt(req.query.userId as string);
+
+  if (orderId && userId && ['active', 'complete'].includes(status)) {
+    const updatedOrder = await order.updateOrderStatus(status, orderId, userId);
+    return res.json(updatedOrder);
+  } else {
+    return res.json({ Error: 'Bad parameters' });
+  }
+});
+OrderController.delete(
+  '/:id',
+  authToken,
+  async (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id);
+    const deletedOrder = await order.deleteOrder(id);
+    return res.json(deletedOrder);
+  }
+);
+OrderController.post('/', authToken, async (req: Request, res: Response) => {
+  const newOrder = await order.createOrder(req.body);
+  return res.json(newOrder);
+});
