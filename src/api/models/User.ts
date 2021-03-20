@@ -2,63 +2,62 @@ import { Response, Request, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import { pool, parseError } from '../db';
 import { generateToken } from '../../utils';
+import { UserReturnType, UserType } from '../interfaces/User';
 
-// define table
-const table: string = 'users';
+export class User {
+  // define table
+  table: string = 'users';
 
-// set error message
-// pool.on('error', (err, client) => `Error, ${err},  occured on ${client}`);
+  // select all users
+  async getUsers(): Promise<UserReturnType[]> {
+    try {
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table}`;
+      const result = await conn.query(sql);
+      conn.release();
 
-// select all users
-const getUsers = (req: Request, res: Response, next: NextFunction) => {
-  pool.query(`SELECT * FROM ${table};`, (error, results) => {
-    if (error) {
-      parseError(error);
-      next(error);
-    } else {
-      res.status(200).json(results.rows);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not get all users. Error: ${parseError(err)}`);
     }
-  });
-};
+  }
 
-// select user by id
-const getUserById = (req: Request, res: Response, next: NextFunction) => {
-  const id = parseInt(req.params.id);
-  pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id], (error, results) => {
-    if (error) {
-      parseError(error);
-      next(error);
-    } else {
-      res.status(200).json(results.rows[0]);
-    }
-  });
-};
+  // select user by id
+  async getUserById(userId: number): Promise<UserReturnType> {
+    try {
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table} WHERE id = $1`;
+      const result = await conn.query(sql, [userId]);
+      conn.release();
 
-// create a user
-const createUser = (req: Request, res: Response, next: NextFunction) => {
-  const { firstName, lastName, password } = req.body;
-  const hashPassword = bcrypt.hashSync(password, 10);
-  pool.query(
-    `INSERT INTO ${table} (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *`,
-    [firstName, lastName, hashPassword],
-    (error, results) => {
-      if (error) {
-        parseError(error);
-        next(error);
-      } else {
-        const id: number = results.rows[0].id;
-        const token = generateToken(id);
-        res.status(200).json({
-          auth: true,
-          token
-        });
-      }
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not get user by id. Error: ${parseError(err)}`);
     }
-  );
-};
+  }
+
+  // create a user
+  async createUser(user: UserType): Promise<UserReturnType> {
+    try {
+      const { firstname, lastname, password } = user;
+      const hashPassword = bcrypt.hashSync(password, 10);
+      const conn = await pool.connect();
+      const sql = `INSERT INTO ${this.table} (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *`;
+      const result = await conn.query(sql, [firstname, lastname, hashPassword]);
+      conn.release();
+
+      const id: number = result.rows[0].id;
+      const token = generateToken(id);
+      return {
+        auth: true,
+        token
+      };
+    } catch (err) {
+      throw new Error(`Could not create user. Error: ${parseError(err)}`);
+    }
+  }
+}
 
 // update
 // delete
 // where
-
-export { getUsers, getUserById, createUser };
