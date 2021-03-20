@@ -1,8 +1,11 @@
-import { Response, Request, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import { pool, parseError } from '../db';
 import { generateToken } from '../../utils';
-import { UserReturnType, UserType } from '../interfaces/User';
+import {
+  UserReturnType,
+  UserType,
+  UserCreatedReturnType
+} from '../interfaces/User';
 
 export class User {
   // define table
@@ -37,7 +40,7 @@ export class User {
   }
 
   // create a user
-  async createUser(user: UserType): Promise<UserReturnType> {
+  async createUser(user: UserType): Promise<UserCreatedReturnType> {
     try {
       const { firstname, lastname, password } = user;
       const hashPassword = bcrypt.hashSync(password, 10);
