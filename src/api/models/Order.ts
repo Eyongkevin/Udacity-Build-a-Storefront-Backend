@@ -22,11 +22,10 @@ export class Order {
   }
 
   // Get current order by user id
-  async getCurrentOrderByUserId(userId: number): Promise<OrderReturnType[]> {
+  async getCurrentOrderByUserId(userId: number): Promise<OrderReturnType> {
     try {
-      const status = 'active';
       const conn = await pool.connect();
-      const sql = `SELECT * FROM ${this.table} WHERE user_id = ${userId} AND status = ${status} LIMIT 1`;
+      const sql = `SELECT * FROM ${this.table} WHERE user_id = ${userId} ORDER BY id DESC LIMIT 1`;
       const result = await conn.query(sql);
       conn.release();
 
@@ -36,13 +35,28 @@ export class Order {
     }
   }
 
+  // Get active order by user id
+  async getActiveOrdersByUserId(userId: number): Promise<OrderReturnType[]> {
+    try {
+      const status = 'active';
+      const conn = await pool.connect();
+      const sql = `SELECT * FROM ${this.table} WHERE user_id = ${userId} AND status = $1`;
+      const result = await conn.query(sql, [status]);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not get active order. Error: ${parseError(err)}`);
+    }
+  }
+
   // select completed order by user id
   async getCompletedOrdersByUserId(userId: number): Promise<OrderReturnType[]> {
     try {
       const status = 'complete';
       const conn = await pool.connect();
-      const sql = `SELECT * FROM ${this.table} WHERE user_id = ${userId} AND status = ${status}`;
-      const result = await conn.query(sql);
+      const sql = `SELECT * FROM ${this.table} WHERE user_id = ${userId} AND status = $1`;
+      const result = await conn.query(sql, [status]);
       conn.release();
 
       return result.rows;
@@ -77,13 +91,12 @@ export class Order {
   // update an order
   async updateOrderStatus(
     status: string,
-    orderId: number,
-    userId: number
+    orderId: number
   ): Promise<OrderReturnType> {
     try {
       const conn = await pool.connect();
-      const sql = `UPDATE ${this.table} SET status=$1 WHERE id=$2 AND user_id=$3 RETURNING *`;
-      const result = await conn.query(sql, [status, orderId, userId]);
+      const sql = `UPDATE ${this.table} SET status=$1 WHERE id=$2 RETURNING *`;
+      const result = await conn.query(sql, [status, orderId]);
       conn.release();
 
       return result.rows[0];
@@ -109,5 +122,3 @@ export class Order {
     }
   }
 }
-
-// delete

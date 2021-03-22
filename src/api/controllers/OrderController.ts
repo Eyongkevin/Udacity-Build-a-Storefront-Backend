@@ -25,6 +25,15 @@ OrderController.get(
   }
 );
 OrderController.get(
+  '/active/:user_id',
+  authToken,
+  async (req: Request, res: Response) => {
+    const userId: number = parseInt(req.params.user_id);
+    const activeOrder = await order.getActiveOrdersByUserId(userId);
+    return res.json(activeOrder);
+  }
+);
+OrderController.get(
   '/completed/:user_id',
   authToken,
   async (req: Request, res: Response) => {
@@ -33,14 +42,13 @@ OrderController.get(
     return res.json(currentOrder);
   }
 );
-// http://0.0.0.0:3000/orders?status=complete&orderId=4&userId=1
+// http://0.0.0.0:3000/orders?status=complete&orderId=4
 OrderController.put('/', authToken, async (req: Request, res: Response) => {
   const status = req.query.status as string;
   const orderId = parseInt(req.query.orderId as string);
-  const userId = parseInt(req.query.userId as string);
 
-  if (orderId && userId && ['active', 'complete'].includes(status)) {
-    const updatedOrder = await order.updateOrderStatus(status, orderId, userId);
+  if (orderId && ['active', 'complete'].includes(status)) {
+    const updatedOrder = await order.updateOrderStatus(status, orderId);
     return res.json(updatedOrder);
   } else {
     return res.json({ Error: 'Bad parameters' });
