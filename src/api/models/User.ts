@@ -61,7 +61,7 @@ export class User {
   }
 
   // delete user
-  async deleteUser(id: number): Promise<UserCreatedReturnType> {
+  async deleteUser(id: number): Promise<UserReturnType> {
     try {
       const sql = `DELETE FROM ${this.table} WHERE id=$1 RETURNING *`;
       const conn = await pool.connect();

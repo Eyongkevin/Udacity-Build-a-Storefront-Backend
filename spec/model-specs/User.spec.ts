@@ -18,6 +18,9 @@ describe('User Model', () => {
   it('should have a createUser method', () => {
     expect(user.createUser).toBeDefined();
   });
+  it('should have a deleteUser method', () => {
+    expect(user.deleteUser).toBeDefined();
+  });
 
   it('createUser method should create a user with auth to true', async () => {
     const result: UserCreatedReturnType = await user.createUser({
@@ -41,6 +44,12 @@ describe('User Model', () => {
     const id: number = 1;
     const result: UserReturnType = await user.getUserById(id);
     expect(result.id).toEqual(id);
+    expect(result.firstname).toEqual('kevin');
+    expect(result.lastname).toEqual('eyong');
+    expect(result.password).toString();
+  });
+  it('deleteProduct method should delete the correct product', async () => {
+    const result: UserReturnType = await user.deleteUser(1);
     expect(result.firstname).toEqual('kevin');
     expect(result.lastname).toEqual('eyong');
     expect(result.password).toString();
