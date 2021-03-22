@@ -18,3 +18,12 @@ UserController.post('/', authToken, async (req: Request, res: Response) => {
   const newUser = await user.createUser(req.body);
   return res.json(newUser);
 });
+UserController.delete(
+  '/:id',
+  authToken,
+  async (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id);
+    const deletedOrder = await user.deleteUser(id);
+    return res.json(deletedOrder);
+  }
+);

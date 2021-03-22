@@ -59,8 +59,18 @@ export class User {
       throw new Error(`Could not create user. Error: ${parseError(err)}`);
     }
   }
-}
 
-// update
-// delete
-// where
+  // delete user
+  async deleteUser(id: number): Promise<UserCreatedReturnType> {
+    try {
+      const sql = `DELETE FROM ${this.table} WHERE id=$1 RETURNING *`;
+      const conn = await pool.connect();
+      const result = await conn.query(sql, [id]);
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not delete user ${id}. Error: ${parseError(err)}`);
+    }
+  }
+}
