@@ -5,7 +5,7 @@ export class Order {
   // define table
   table: string = 'orders';
 
-  // select all orders
+  // select all orders for a user
   async getOrders(userId: number): Promise<OrderReturnType[]> {
     try {
       const conn = await pool.connect();
