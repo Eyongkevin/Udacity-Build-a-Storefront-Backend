@@ -63,4 +63,20 @@ export class Product {
       throw new Error(`Could not create product. Error: ${parseError(err)}`);
     }
   }
+
+  // delete product
+  async deleteProduct(id: number): Promise<ProductReturnType> {
+    try {
+      const sql = `DELETE FROM ${this.table} WHERE id=$1 RETURNING *`;
+      const conn = await pool.connect();
+      const result = await conn.query(sql, [id]);
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(
+        `Could not delete product ${id}. Error: ${parseError(err)}`
+      );
+    }
+  }
 }

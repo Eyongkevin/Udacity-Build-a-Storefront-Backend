@@ -24,3 +24,12 @@ ProductController.post('/', authToken, async (req: Request, res: Response) => {
   console.log('result: ', createdProduct);
   return res.json(createdProduct);
 });
+ProductController.delete(
+  '/:id',
+  authToken,
+  async (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id);
+    const deletedOrder = await product.deleteProduct(id);
+    return res.json(deletedOrder);
+  }
+);
