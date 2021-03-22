@@ -19,6 +19,9 @@ describe('Product Model', () => {
   it('should have a getProducts method', () => {
     expect(product.getProducts).toBeDefined();
   });
+  it('should have a deleteProduct method', () => {
+    expect(product.deleteProduct).toBeDefined();
+  });
 
   it('createProduct method should create a product', async () => {
     const result: ProductReturnType = await product.createProduct({
@@ -64,5 +67,14 @@ describe('Product Model', () => {
         category: 'phone'
       }
     ]);
+  });
+  it('deleteProduct method should delete the correct product', async () => {
+    const result = await product.deleteProduct(1);
+    expect(result).toEqual({
+      id: 1,
+      name: 'iPhone',
+      price: '645',
+      category: 'phone'
+    });
   });
 });
