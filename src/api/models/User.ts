@@ -6,6 +6,7 @@ import {
   UserType,
   UserCreatedReturnType
 } from '../interfaces/User';
+import { PoolClient, QueryResult } from 'pg';
 
 export class User {
   // define table
@@ -14,9 +15,9 @@ export class User {
   // select all users
   async getUsers(): Promise<UserReturnType[]> {
     try {
-      const conn = await pool.connect();
-      const sql = `SELECT * FROM ${this.table}`;
-      const result = await conn.query(sql);
+      const conn: PoolClient = await pool.connect();
+      const sql: string = `SELECT * FROM ${this.table}`;
+      const result: QueryResult = await conn.query(sql);
       conn.release();
 
       return result.rows;
@@ -28,9 +29,9 @@ export class User {
   // select user by id
   async getUserById(userId: number): Promise<UserReturnType> {
     try {
-      const conn = await pool.connect();
-      const sql = `SELECT * FROM ${this.table} WHERE id = $1`;
-      const result = await conn.query(sql, [userId]);
+      const conn: PoolClient = await pool.connect();
+      const sql: string = `SELECT * FROM ${this.table} WHERE id = $1`;
+      const result: QueryResult = await conn.query(sql, [userId]);
       conn.release();
 
       return result.rows[0];
@@ -43,14 +44,18 @@ export class User {
   async createUser(user: UserType): Promise<UserCreatedReturnType> {
     try {
       const { firstname, lastname, password } = user;
-      const hashPassword = bcrypt.hashSync(password, 10);
-      const conn = await pool.connect();
-      const sql = `INSERT INTO ${this.table} (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *`;
-      const result = await conn.query(sql, [firstname, lastname, hashPassword]);
+      const hashPassword: string = bcrypt.hashSync(password, 10);
+      const conn: PoolClient = await pool.connect();
+      const sql: string = `INSERT INTO ${this.table} (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *`;
+      const result: QueryResult = await conn.query(sql, [
+        firstname,
+        lastname,
+        hashPassword
+      ]);
       conn.release();
 
       const id: number = result.rows[0].id;
-      const token = generateToken(id);
+      const token: string = generateToken(id);
       return {
         auth: true,
         token
@@ -63,9 +68,9 @@ export class User {
   // delete user
   async deleteUser(id: number): Promise<UserReturnType> {
     try {
-      const sql = `DELETE FROM ${this.table} WHERE id=$1 RETURNING *`;
-      const conn = await pool.connect();
-      const result = await conn.query(sql, [id]);
+      const sql: string = `DELETE FROM ${this.table} WHERE id=$1 RETURNING *`;
+      const conn: PoolClient = await pool.connect();
+      const result: QueryResult = await conn.query(sql, [id]);
       conn.release();
 
       return result.rows[0];
