@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 import { User } from '../../src/api/models/User';
 import {
   UserReturnType,
   UserCreatedReturnType
 } from '../../src/api/interfaces/User';
 
-const user = new User();
+const user: User = new User();
 
 describe('User Model', () => {
   it('should have a getUsers  method', () => {
