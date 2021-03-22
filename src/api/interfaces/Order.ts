@@ -1,12 +1,8 @@
 /* eslint-disable camelcase */
-// export enum STATUS {
-//   active = 'active',
-//   completed = 'completed'
-// }
 export interface OrderType {
-  productId: number;
+  product_id: number;
   quantity: number;
-  userId: number;
+  user_id: number;
   status: string;
 }
 export interface OrderReturnType {

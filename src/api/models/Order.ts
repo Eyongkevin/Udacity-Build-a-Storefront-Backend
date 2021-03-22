@@ -70,14 +70,17 @@ export class Order {
   // create an order
   async createOrder(order: OrderType): Promise<OrderReturnType> {
     try {
-      const { productId, quantity, userId, status } = order;
+      // eslint-disable-next-line camelcase
+      const { product_id, quantity, user_id, status } = order;
 
       const conn = await pool.connect();
       const sql = `INSERT INTO ${this.table} (product_id, quantity, user_id, status) VALUES($1, $2, $3, $4) RETURNING *`;
       const result = await conn.query(sql, [
-        productId,
+        // eslint-disable-next-line camelcase
+        product_id,
         quantity,
-        userId,
+        // eslint-disable-next-line camelcase
+        user_id,
         status
       ]);
       conn.release();
