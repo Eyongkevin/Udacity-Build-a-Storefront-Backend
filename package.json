@@ -5,6 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "watch": "rimraf ./dist && tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
+    "dev-up": "db-migrate up -m ./_Database/migrations   --config ./_Database/config/dev.json",
+    "dev-down": "db-migrate reset -m ./_Database/migrations  --config ./_Database/config/dev.json",
     "test-up": "db-migrate up -e test -m ./_Database/migrations   --config ./_Database/config/test.json ",
     "test-down": "db-migrate reset  -e test -m ./_Database/migrations  --config ./_Database/config/test.json",
     "test": "npm run test-up && ENVI=test jasmine-ts && npm run test-down",

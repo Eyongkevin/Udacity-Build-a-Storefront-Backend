@@ -2,15 +2,15 @@
 
 This is a backend API build in Nodejs for an online store. It exposes a RESTful API that will be used by the frontend developer on the frontend. 
 
-The database schema and and API route information can be found in the `REQUIREMENTS.md` file. 
+The database schema and and API route information can be found in the [REQUIREMENT.md](REQUIREMENTS.md) 
 
 ## Installation Instructions
 This section contains all the packages used in this project and how to install them. However, you can fork this repo and run the following command at the root directory to install all packages.
 
-`$ yarn`
+`yarn` or `npm install`
 
 ### Packages
-
+Here are a few packages that were installed.
 ---------------
 #### express
 `npm i -S express`
@@ -44,36 +44,41 @@ This section contains all the packages used in this project and how to install t
 `npm -i -D @types/jsonwebtoken`
 
 #### jasmine
-`npm install jasmine @types/jasmine --save-dev`
+`npm install jasmine @types/jasmine @ert78gb/jasmine-ts ts-node --save-dev`
 
-#### request
-`npm install --save request`
+#### supertest
+`npm i supertest`
+`npm i --save-dev @types/supertest`
 
-#### babel 
-`npm install --save-dev @babel/cli @babel/core @babel/preset-env`
 
 ## Set up Database
-### Create Database
+### Create Databases
+We shall create the dev and test database.
 
 - connect to the default postgres database as the server's root user `psql -U postgres`
 - In psql run the following to create a user 
     - `CREATE USER shopping_user WITH PASSWORD 'password123';`
-- In psql run the following to create the database
+- In psql run the following to create the dev and test database
     - `CREATE DATABASE shopping;`
-- Connect to the database and grant all privileges 
-    - `\c shopping`
-    - `GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
+    - `CREATE DATABASE shopping_test;`
+- Connect to the databases and grant all privileges
+    - Grant for dev database
+        - `\c shopping`
+        - `GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
+    - Grant for dev database
+        - `\c shopping_test`
+        - `GRANT ALL PRIVILEGES ON DATABASE shopping_test TO shopping_user;`
 
 ### Migrate Database
 Navigate to the root directory and run the command below to migrate the database 
 
-`db-migrate up -m ./_Database/migrations     --config ./_Database/config/dev.json `
+`yarn dev-up`
 
 !['migrate database'](./docs/migrate_up.png)
 
 
 ## Endpoint Access
-All endpoints are described in the `REQUIREMENTS.md` file. 
+All endpoints are described in the [REQUIREMENT.md](REQUIREMENTS.md) file. 
 
 ## Token and Authentication
 Tokens are passed along with the http header as 
@@ -81,19 +86,14 @@ Tokens are passed along with the http header as
 Authorization   Bearer <token>  
 ```
 
-Tokens are generated for each user during creation. This makes it impossible to create a user at this stage because no token is available(Maybe there is a better way).
-
+Tokens are generated for each user during creation. This token is used for testing purposes: `'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.J8BgsyqA3Y6F71NXbfuYIfRVuvRa_qb08RStxrCVhlQ'`
 
 ## Testing
 Run test with 
 
-1. First compile the code with babel: `npm run build-dist-babel`
-2. Run test: `npm run test`
+`yarn test`
 
+!['test 1'](docs/test1.png)
+!['test 2'](docs/test2.png)
+!['test 3'](docs/test3.png)
 
-
-## Difficulties
-Maybe I am missing something, but so far, these are the difficulties I faced and I'll be grateful if help is provided. 
-
-- I couldn't write test for both my models and endpoints with jasmine as I didn't know how to test APIs wiithout hitting the database. Also, the way my model and controllers are setup, I don't know how to write test for my models and to also mock the pool query. 
-- it is required that we secure the route that initiates the creation of new users and also it is required that we generate tokens for each user. This means we won't be able to create any new user because initially, there is no user and so, no token. 
