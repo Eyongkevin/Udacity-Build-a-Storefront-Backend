@@ -35,7 +35,7 @@ describe('User Model', () => {
   it('should return all users using getUsers method', async () => {
     const result: UserReturnType[] = await user.getUsers();
     expect(result).toHaveSize(1);
-    expect(result[0].id).toEqual(1);
+    expect(result[0].id).toEqual(2);
     expect(result[0].firstname).toEqual('kevin');
     expect(result[0].lastname).toEqual('eyong');
     expect(result[0].password.length).toBeGreaterThanOrEqual(60);
@@ -43,7 +43,7 @@ describe('User Model', () => {
   });
 
   it('should return the correct user using getUserById method', async () => {
-    const id: number = 1;
+    const id: number = 2;
     const result: UserReturnType = await user.getUserById(id);
     expect(result.id).toEqual(id);
     expect(result.firstname).toEqual('kevin');
@@ -51,7 +51,7 @@ describe('User Model', () => {
     expect(result.password.length).toBeGreaterThanOrEqual(60);
   });
   it('should delete the correct product using deleteProduct method', async () => {
-    const result: UserReturnType = await user.deleteUser(1);
+    const result: UserReturnType = await user.deleteUser(2);
     expect(result.firstname).toEqual('kevin');
     expect(result.lastname).toEqual('eyong');
     expect(result.password.length).toBeGreaterThanOrEqual(60);

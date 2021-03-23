@@ -27,7 +27,7 @@ describe('Product Model', () => {
       category: 'phone'
     });
     expect(result).toEqual({
-      id: 1,
+      id: 2,
       name: 'iPhone',
       price: '645',
       category: 'phone'
@@ -37,7 +37,7 @@ describe('Product Model', () => {
     const result: ProductReturnType[] = await product.getProducts();
     expect(result).toEqual([
       {
-        id: 1,
+        id: 2,
         name: 'iPhone',
         price: '645',
         category: 'phone'
@@ -46,9 +46,9 @@ describe('Product Model', () => {
   });
 
   it('getProductById method should return the correct product', async () => {
-    const result: ProductReturnType = await product.getProductById(1);
+    const result: ProductReturnType = await product.getProductById(2);
     expect(result).toEqual({
-      id: 1,
+      id: 2,
       name: 'iPhone',
       price: '645',
       category: 'phone'
@@ -58,7 +58,7 @@ describe('Product Model', () => {
     const result: ProductReturnType[] = await product.getProductByCat('phone');
     expect(result).toEqual([
       {
-        id: 1,
+        id: 2,
         name: 'iPhone',
         price: '645',
         category: 'phone'
@@ -66,9 +66,9 @@ describe('Product Model', () => {
     ]);
   });
   it('deleteProduct method should delete the correct product', async () => {
-    const result: ProductReturnType = await product.deleteProduct(1);
+    const result: ProductReturnType = await product.deleteProduct(2);
     expect(result).toEqual({
-      id: 1,
+      id: 2,
       name: 'iPhone',
       price: '645',
       category: 'phone'
