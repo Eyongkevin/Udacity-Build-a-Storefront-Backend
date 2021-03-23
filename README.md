@@ -93,6 +93,8 @@ Run test with
 
 `yarn test`
 
+It sets the environment to `test`, migrates up tables for the test database, run the test then migrate down all the tables for the test database. 
+
 !['test 1'](docs/test1.png)
 !['test 2'](docs/test2.png)
 !['test 3'](docs/test3.png)
