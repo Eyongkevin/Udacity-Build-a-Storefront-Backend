@@ -23,36 +23,36 @@ describe('User Model', () => {
     expect(user.deleteUser).toBeDefined();
   });
 
-  it('createUser method should create a user with auth to true', async () => {
+  it('should create a user with auth to true using createUser method', async () => {
     const result: UserCreatedReturnType = await user.createUser({
       firstname: 'kevin',
       lastname: 'eyong',
       password: 'thisismeenow2020#'
     });
     expect(result.auth).toEqual(true);
-    expect(result.token).toString();
+    expect(result.token).toBeDefined();
   });
-  it('getUsers method should return all users', async () => {
+  it('should return all users using getUsers method', async () => {
     const result: UserReturnType[] = await user.getUsers();
     expect(result).toHaveSize(1);
     expect(result[0].id).toEqual(1);
     expect(result[0].firstname).toEqual('kevin');
     expect(result[0].lastname).toEqual('eyong');
-    expect(result[0].password).toString();
+    expect(result[0].password.length).toBeGreaterThanOrEqual(60);
   });
 
-  it('getUserById method should return the correct user', async () => {
+  it('should return the correct user using getUserById method', async () => {
     const id: number = 1;
     const result: UserReturnType = await user.getUserById(id);
     expect(result.id).toEqual(id);
     expect(result.firstname).toEqual('kevin');
     expect(result.lastname).toEqual('eyong');
-    expect(result.password).toString();
+    expect(result.password.length).toBeGreaterThanOrEqual(60);
   });
-  it('deleteProduct method should delete the correct product', async () => {
+  it('should delete the correct product using deleteProduct method', async () => {
     const result: UserReturnType = await user.deleteUser(1);
     expect(result.firstname).toEqual('kevin');
     expect(result.lastname).toEqual('eyong');
-    expect(result.password).toString();
+    expect(result.password.length).toBeGreaterThanOrEqual(60);
   });
 });
