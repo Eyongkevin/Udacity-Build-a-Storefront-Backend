@@ -39,6 +39,7 @@ describe('User Model', () => {
     expect(result[0].firstname).toEqual('kevin');
     expect(result[0].lastname).toEqual('eyong');
     expect(result[0].password.length).toBeGreaterThanOrEqual(60);
+    expect(result[0].password).not.toEqual('thisismeenow2020#');
   });
 
   it('should return the correct user using getUserById method', async () => {
