@@ -29,7 +29,7 @@ describe('Order Model', () => {
   it('should have a createOrder method', () => {
     expect(order.createOrder).toBeDefined();
   });
-  describe('Manipulate Order metods', () => {
+  describe('Manipulate Order methods', () => {
     const user = new User();
     const product = new Product();
 
@@ -76,6 +76,34 @@ describe('Order Model', () => {
           status: 'active'
         }
       ]);
+    });
+    it('should return current order of user using getCurrentOrderByUserId method', async () => {
+      const result: OrderReturnType = await order.getCurrentOrderByUserId(1);
+      expect(result).toEqual({
+        id: 1,
+        product_id: 1,
+        quantity: 10,
+        user_id: 1,
+        status: 'active'
+      });
+    });
+    it('should return active orders of user using getActiveOrdersByUserId method', async () => {
+      const result: OrderReturnType[] = await order.getActiveOrdersByUserId(1);
+      expect(result).toEqual([
+        {
+          id: 1,
+          product_id: 1,
+          quantity: 10,
+          user_id: 1,
+          status: 'active'
+        }
+      ]);
+    });
+    it('should return completed orders of user using getCompletedOrdersByUserId method', async () => {
+      const result: OrderReturnType[] = await order.getCompletedOrdersByUserId(
+        1
+      );
+      expect(result).toEqual([]);
     });
     it('should update order status using updateOrderStatus method', async () => {
       const result: OrderReturnType = await order.updateOrderStatus(
