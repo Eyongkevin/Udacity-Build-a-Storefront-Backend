@@ -92,7 +92,7 @@ describe('Test Order endpoint responses', () => {
       .post('/orders')
       .set('Authorization', 'Bearer ' + token);
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: 2,
       product_id: 10,
@@ -195,7 +195,7 @@ describe('Test Order endpoint responses', () => {
       .put('/orders?status=acti&orderId=1')
       .set('Authorization', 'Bearer ' + token);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(400);
     expect(res.body.Error).toEqual('Bad parameters');
     done();
   });

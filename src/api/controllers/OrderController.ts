@@ -66,7 +66,7 @@ OrderController.put('/', authToken, async (req: Request, res: Response) => {
     );
     return res.json(updatedOrder);
   } else {
-    return res.json({ Error: 'Bad parameters' });
+    return res.status(400).json({ Error: 'Bad parameters' });
   }
 });
 // delete order by order id
