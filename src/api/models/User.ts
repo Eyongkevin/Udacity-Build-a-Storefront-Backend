@@ -44,7 +44,13 @@ export class User {
   async createUser(user: UserType): Promise<UserCreatedReturnType> {
     try {
       const { firstname, lastname, password } = user;
-      const hashPassword: string = bcrypt.hashSync(password, 10);
+      const pepper: string = process.env.BCRYPT_PASSWORD as string;
+      const salt: string = process.env.SALT_ROUNDS as string;
+
+      const hashPassword: string = bcrypt.hashSync(
+        password + pepper,
+        parseInt(salt)
+      );
       const conn: PoolClient = await pool.connect();
       const sql: string = `INSERT INTO ${this.table} (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *`;
       const result: QueryResult = await conn.query(sql, [
