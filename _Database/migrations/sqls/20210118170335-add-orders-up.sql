@@ -7,6 +7,6 @@ CREATE TABLE orders(
     user_id INTEGER,
     status mood NOT NULL,
 
-    FOREIGN KEY (product_id) REFERENCES products(id) ON UPDATE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE 
 );

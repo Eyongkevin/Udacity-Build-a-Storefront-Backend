@@ -6,19 +6,25 @@ These are the notes from a meeting with the frontend developer that describe wha
 ## API Endpoints
 #### Products
 - Index: `'products/' [GET]`
-- Show (args: product id): `'products/:id' [GET]`
+- Show: `'products/:id' [GET]`
 - Create (args: Product)[token required]: `'products/' [POST] (token)`
 - [OPTIONAL] Top 5 most popular products
-- [OPTIONAL] Products by category (args: product category): `'products/:category' [GET]`
+- [OPTIONAL] Products by category: `'products/cat/:category' [GET]`
+- [ADDED] Delete: `'products/:id  [DELETE]`
 
 #### Users
-- Index [token required]: `'users/' [GET]`
-- Show (args: id)[token required]: `'users/:id' [GET] (token)`
+- Index [token required]: `'users/' [GET] (token)`
+- Show [token required]: `'users/:id' [GET] (token)`
 - Create (args: User)[token required]: `'users/' [POST] (token)`
+- [ADDED] Delete [token required]: `'users/:id' [DELETE] (token)`
 
 #### Orders
-- Current Order by user (args: user id)[token required]: `'orders/current/:user_id' [GET] (token)`
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]: `'orders/completed/:user_id' [GET] (token)`
+- Index [token required]: `'orders/:user_id' [GET] (token)`
+- Current Order by user [token required]: `'orders/current/:user_id' [GET] (token)`
+- [OPTIONAL] Completed Orders by user [token required]: `'orders/completed/:user_id' [GET] (token)`
+- [ADDED] Active Orders by user [token required]: `'orders/active/:user_id' [GET] (token)`
+- [ADDED] Update order's status [token required]: `'orders?status=<status>&orderId=<order id> [PUT] (token)`
+- [ADDED] Delete [token required]: `'orders/:id [DELETE] (token)`
 
 ## Data Shapes
 #### Product

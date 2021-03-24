@@ -8,10 +8,10 @@
       }
     }
   ],
-  "spec_dir": "dist-test/spec",
+  "spec_dir": "spec",
   "spec_files": [
-    "**/*[sS]pec.js"
+    "**/*[sS]pec.ts"
   ],
   "stopSpecOnExpectationFailure": false,
-  "random": true
+  "random": false
 }

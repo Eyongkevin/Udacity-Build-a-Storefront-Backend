@@ -10,7 +10,7 @@ const _routes: [string, Router][] = [
   ['/orders', OrderController]
 ];
 
-export const routes = (app: Application) => {
+export const routes: Function = (app: Application): void => {
   _routes.forEach((route) => {
     const [url, controller] = route;
     app.use(url, controller);
