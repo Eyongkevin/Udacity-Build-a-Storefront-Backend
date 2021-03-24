@@ -10,8 +10,9 @@ This section contains all the packages used in this project and how to install t
 `yarn` or `npm install`
 
 ### Packages
-Here are a few packages that were installed.
----------------
+
+Here are some of the few packages that were installed.
+
 #### express
 `npm i -S express`
 `npm i -D @types/express`
@@ -76,6 +77,10 @@ Navigate to the root directory and run the command below to migrate the database
 
 !['migrate database'](./docs/migrate_up.png)
 
+## Start App
+`yarn watch` or `npm run watch`
+
+!['start server'](./docs/start.png)
 
 ## Endpoint Access
 All endpoints are described in the [REQUIREMENT.md](REQUIREMENTS.md) file. 
