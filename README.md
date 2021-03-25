@@ -66,7 +66,7 @@ We shall create the dev and test database.
     - Grant for dev database
         - `\c shopping`
         - `GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
-    - Grant for dev database
+    - Grant for test database
         - `\c shopping_test`
         - `GRANT ALL PRIVILEGES ON DATABASE shopping_test TO shopping_user;`
 
