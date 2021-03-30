@@ -9,7 +9,7 @@
     "dev-down": "db-migrate reset -m ./_Database/migrations  --config ./_Database/config/dev.json",
     "test-up": "db-migrate up -e test -m ./_Database/migrations   --config ./_Database/config/test.json ",
     "test-down": "db-migrate reset  -e test -m ./_Database/migrations  --config ./_Database/config/test.json",
-    "test": "npm run test-up && ENVI=test jasmine-ts && npm run test-down",
+    "test": "npm run test-up && cross-env ENVI=test jasmine-ts && npm run test-down",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
     "tsc": "rimraf ./dist && tsc"
@@ -40,6 +40,7 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.2.0",

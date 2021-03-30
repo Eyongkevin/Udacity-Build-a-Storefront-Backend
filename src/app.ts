@@ -1,5 +1,4 @@
 import express, { Application } from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import { routes } from './api/routes';
@@ -15,7 +14,7 @@ const corsOption = {
 };
 app.use(cors(corsOption));
 // add json parser
-app.use(bodyParser.json());
+app.use(express.json());
 // console log all requests
 app.use(loggerMiddleware);
 // set routes

@@ -4,8 +4,7 @@ import { Product } from '../../src/api/models/Product';
 import { server } from '../../src/server';
 
 const request = supertest(server);
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.J8BgsyqA3Y6F71NXbfuYIfRVuvRa_qb08RStxrCVhlQ';
+const token: string = process.env.TOKEN_TEST as string;
 
 describe('Test Product endpoint responses', () => {
   beforeAll(() => {
