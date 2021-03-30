@@ -128,7 +128,7 @@ It sets the environment to `test`, migrates up tables for the test database, run
 
 ## Important Notes 
 
-## Environment Variables
+### Environment Variables
 Environment variables are set in the `.env` file and added in `.gitignore` so that it won't be added to github. However, I had provided the names of the variables that need to be set above. I also provided the values that were used in development and testing. 
 
 
