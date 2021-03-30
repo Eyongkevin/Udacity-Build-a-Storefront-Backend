@@ -80,22 +80,6 @@ Navigate to the root directory and run the command below to migrate the database
 
 !['migrate database'](./docs/migrate_up.png)
 
-## Start App
-`yarn watch` or `npm run watch`
-
-!['start server'](./docs/start.png)
-
-### Running Ports 
-After start up, the server will start on port `3000` and the database on port `5432`
-
-## Endpoint Access
-All endpoints are described in the [REQUIREMENT.md](REQUIREMENTS.md) file. 
-
-## Token and Authentication
-Tokens are passed along with the http header as 
-```
-Authorization   Bearer <token>
-```
 ## Enviromental Variables Set up
 Bellow are the environmental variables that needs to be set in a `.env` file. This is the default setting that I used for development, but you can change it to what works for you. 
 
@@ -114,6 +98,24 @@ TOKEN_TEST = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.J8BgsyqA3Y6F71NXbfuYIfRVuv
 JWT_SECRET = 5ae8adc9731627905ebf0905dbe4a114ba7d8354ae1796772dfa523a2142761b78d48cbfcd98000bb94fbdbd8147f30de6b3484c3a060d389068204df6a50630
 ENVI = dev
 ```
+
+## Start App
+`yarn watch` or `npm run watch`
+
+!['start server'](./docs/start.png)
+
+### Running Ports 
+After start up, the server will start on port `3000` and the database on port `5432`
+
+## Endpoint Access
+All endpoints are described in the [REQUIREMENT.md](REQUIREMENTS.md) file. 
+
+## Token and Authentication
+Tokens are passed along with the http header as 
+```
+Authorization   Bearer <token>
+```
+
 ## Testing
 Run test with 
 
